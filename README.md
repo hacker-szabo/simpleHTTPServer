@@ -7,7 +7,7 @@ The project was written in go1.21 and uses gorilla/mux under the hood.
 
 # Features
 
-This is the roadmap for the project, you can use the features 
+This is the roadmap for the project, you can already use the features if they are checked:
 
 - [x] Interface for cURL and wget
 - [x] Choosing a web root directory in the CLI interface
