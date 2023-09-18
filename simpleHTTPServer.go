@@ -59,7 +59,6 @@ func main() {
 		arguments.rootDir += "/"
 	}
 
-	// if rootDir does not end with a slash, add one
 	fmt.Printf("Serving files from: %s\n", arguments.rootDir)
 	fmt.Printf("Listening on port: %s\n", arguments.port)
 
