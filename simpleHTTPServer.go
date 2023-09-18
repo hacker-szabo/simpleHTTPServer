@@ -39,8 +39,10 @@ func args() Arguments {
 func listAllFiles(rootDir string) []string {
 	var files []string
 	filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {
-		// remove rootDir from path
-		path = path[len(rootDir):]
+		// remove rootDir from path if path starts with rootDir
+		if len(path) >= len(rootDir) && path[:len(rootDir)] == rootDir {
+			path = path[len(rootDir):]
+		}
 		files = append(files, path)
 		return nil
 	})
@@ -52,6 +54,12 @@ func listAllFiles(rootDir string) []string {
 func main() {
 	arguments := args()
 
+	// if rootDir does not end with a slash, add one
+	if arguments.rootDir[len(arguments.rootDir)-1] != '/' {
+		arguments.rootDir += "/"
+	}
+
+	// if rootDir does not end with a slash, add one
 	fmt.Printf("Serving files from: %s\n", arguments.rootDir)
 	fmt.Printf("Listening on port: %s\n", arguments.port)
 
@@ -80,6 +88,7 @@ func main() {
 			// read file bytes
 			file, err := os.Open(absoluteFilePath)
 			if err != nil {
+				fmt.Printf("File could not be read: %s\t%s\n", err, absoluteFilePath)
 				http.Error(w, "File could not be read", http.StatusNotFound)
 			}
 

@@ -24,7 +24,7 @@ This is the roadmap for the project, you can already use the features if they ar
 
 ## Releases
 
-Check https://github.com/hacker-szabo/simpleHTTPServer/releases (TODO for me)
+Check https://github.com/hacker-szabo/simpleHTTPServer/releases and download the .zip file for your operating system and architecture.
 
 ## Using go installer
 

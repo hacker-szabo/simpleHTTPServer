@@ -1,4 +1,4 @@
-module example.com/packages
+module github.com/hacker-szabo/simpleHTTPServer
 
 go 1.21.1
 
