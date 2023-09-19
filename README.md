@@ -96,7 +96,7 @@ wget http://server_address:9000/id/3 -O picture.jpg
 
 In the future, browser support will be available with a nice UI.
 
-## Upload file to simpleHTTPServer
+## Upload a file to simpleHTTPServer
 
 Navigate to the webroot and run the software:
 
@@ -121,11 +121,11 @@ curl <yourserver>:<yourport>/upload/ -T <yourfile>
 For example:
 
 ```
-curl 127.0.0.1/upload/ -T test.txt
+curl 127.0.0.1:9000/upload/ -T test.txt
 ```
 
 You can also give a different filename and the server will write it into that file or overwrite the existing file:
 
 ```
-curl 127.0.0.1/upload/FILENAME_ON_SERVER.TXT -T test.txt
+curl 127.0.0.1:9000/upload/FILENAME_ON_SERVER.TXT -T test.txt
 ```
