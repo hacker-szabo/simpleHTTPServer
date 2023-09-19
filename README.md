@@ -11,7 +11,7 @@ This is the roadmap for the project, you can already use the features if they ar
 
 - [x] Interface for cURL and wget
 - [x] Choosing a web root directory in the CLI interface
-- [ ] Accepting upload requests with `curl -T <file>`
+- [x] Accepting upload requests with `curl -T <file>`
 - [ ] Interface for browsers implemented in svelte (probably)
 - [ ] Zip compressing for multiple files
 - [ ] Tar compressing for multiple files (for machines that do not have zip installed)
@@ -95,3 +95,37 @@ wget http://server_address:9000/id/3 -O picture.jpg
 ```
 
 In the future, browser support will be available with a nice UI.
+
+## Upload file to simpleHTTPServer
+
+Navigate to the webroot and run the software:
+
+```
+simpleHTTPServer -u
+```
+
+Where the `-u` means that you enable the clients to send files to upload with the PUT method.
+
+OR provide the webroot by the `-t` flag:
+
+```
+simpleHTTPServer -u -t <your_webroot>
+```
+
+On client side you need to send the file with the following command:
+
+```
+curl <yourserver>:<yourport>/upload/ -T <yourfile>
+```
+
+For example:
+
+```
+curl 127.0.0.1/upload/ -T test.txt
+```
+
+You can also give a different filename and the server will write it into that file or overwrite the existing file:
+
+```
+curl 127.0.0.1/upload/FILENAME_ON_SERVER.TXT -T test.txt
+```
