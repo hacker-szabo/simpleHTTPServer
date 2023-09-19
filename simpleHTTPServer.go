@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"strconv"
 	"bufio"
+	"strings"
+	"io/ioutil"
 )
 
 type Arguments struct {
@@ -101,6 +103,62 @@ func main() {
 			http.Error(w, "Invalid ID", http.StatusBadRequest)
 		}
 	})
+
+	r.HandleFunc("/upload/{filename}", func (w http.ResponseWriter, r *http.Request) {
+		if !arguments.transfer {
+			http.Error(w, "File transfer is not enabled on the server!", http.StatusForbidden)
+			return
+		}
+		filename := mux.Vars(r)["filename"]
+		httpBody := r.Body
+		body, bodyErr := ioutil.ReadAll(httpBody)
+
+		if bodyErr != nil {
+			http.Error(w, "Could not read HTTP body", http.StatusBadRequest)
+		}
+
+
+		if filename == "" {
+			http.Error(w, "Blank filename", http.StatusBadRequest)
+			return
+		}
+
+		if len(body) == 0 {
+			http.Error(w, "Blank HTTP body", http.StatusBadRequest)
+			return
+		}
+
+		// remove null characters from filename
+		newFilename := ""
+		for _, c := range filename {
+			if c != 0 {
+				newFilename += string(c)
+			}
+		}
+		filename = newFilename
+
+		filename = strings.Replace(filename, "../", "", -1)
+
+		filename = strings.Replace(filename, "/", "", -1)
+
+		// arguments.rootDir ends with a slash
+		absoluteFilePath := arguments.rootDir + filename
+
+		// write to file
+		file, err := os.Create(absoluteFilePath)
+
+		if err != nil {
+			fmt.Printf("File could not be created: %s\t%s\n", err, absoluteFilePath)
+			http.Error(w, "File could not be created", http.StatusNotFound)
+		}
+
+		fmt.Fprintf(file, "%s", body)
+		// body.WriteTo(file)
+		file.Close()
+
+		fmt.Fprintf(w, "File uploaded successfully: %s\n", filename)
+
+	}).Methods("PUT")
 
 	port := ":" + arguments.port
 
